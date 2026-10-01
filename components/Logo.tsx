@@ -25,11 +25,11 @@ export function Logo({
     <Link
       href="/"
       className={cn("inline-flex items-center", className)}
-      aria-label="Academia PsicoMar — inicio"
+      aria-label="PSICOMAR — inicio"
     >
       <Image
         src={src}
-        alt="Academia PsicoMar"
+        alt="PSICOMAR"
         priority
         sizes="180px"
         style={{ height: alto, width: "auto" }}

@@ -4,21 +4,23 @@ export const terminos = `Estos términos regulan el uso del sitio de Academia Ps
 
 ## 1. Quiénes somos
 
-Academia PsicoMar es un espacio de formación y atención en psicología a cargo de las Lic. Kiara y Lic. Maite Martelli. El contacto es a través de los medios publicados en este sitio.
+PSICOMAR es un espacio de psicología y formación. Academia PsicoMar reúne sus propuestas para profesionales. El contacto es a través de los medios publicados en este sitio.
 
 ## 2. Servicios de atención clínica
 
-La atención clínica se brinda de forma online e individual, para personas adultas. El vínculo terapéutico se acuerda directamente con la profesional por los canales de contacto (WhatsApp). Las condiciones de cada proceso (frecuencia, honorarios, política de cancelación) se informan antes de comenzar.
+La atención clínica se brinda de forma online e individual, para personas adultas. La solicitud de admisión recoge solo datos administrativos. PSICOMAR asigna profesional y coordina un encuentro de 45–50 minutos por Google Meet, que se confirma después del abono. El seguimiento terapéutico se acuerda directamente con la profesional. Las condiciones de cada proceso (frecuencia, honorarios, política de cancelación) se informan antes de comenzar.
 
 ## 3. Formaciones, supervisiones y productos digitales
 
-- Las inscripciones a talleres, cursos y supervisiones se confirman con el pago correspondiente.
+- Las inscripciones se confirman cuando se aprueba el pago. Los cursos tienen 30 días de acceso desde esa aprobación. Las herramientas y los certificados ya emitidos permanecen disponibles en la cuenta.
+- Los certificados requieren completar las condiciones de la propuesta; no constituyen una habilitación profesional.
+- Las supervisiones se coordinan por WhatsApp. El pago del formato grupal corresponde a un mes y no se renueva automáticamente.
 - Los productos digitales (packs de herramientas, cursos grabados) otorgan una licencia de uso personal e intransferible para la práctica profesional de quien los adquiere. No está permitida su redistribución ni reventa.
 - Las fechas, contenidos y precios pueden actualizarse; se respeta lo informado al momento de la inscripción.
 
 ## 4. Pagos y reembolsos
 
-Los pagos se procesan a través de plataformas externas (por ejemplo, Mercado Pago). Por tratarse de contenidos digitales de acceso inmediato, los packs y cursos grabados no admiten devolución una vez entregado el acceso, salvo error en la entrega. Para formaciones en vivo, la política de cancelación se informa en cada propuesta.
+Los medios habilitados y sus precios se muestran antes de comprar. Mercado Pago verifica los pagos de forma electrónica. Las transferencias requieren comprobante y aprobación manual. Para solicitar cambios, cancelaciones o reembolsos, contactá a psicomar.km@gmail.com e indicá tu número de pedido. Estas condiciones no limitan los derechos que correspondan conforme a la normativa aplicable.
 
 ## 5. Propiedad intelectual
 
@@ -30,19 +32,22 @@ El contenido educativo del sitio tiene fines informativos y de formación profes
 
 _Última actualización: 2026._`;
 
-export const privacidad = `En Academia PsicoMar cuidamos tus datos personales y los usamos solo para los fines para los que los compartís.
+export const privacidad = `En PSICOMAR cuidamos tus datos personales y los usamos solo para los fines para los que los compartís.
 
 ## Qué datos recopilamos
 
 - **Formulario de contacto:** nombre, email, motivo y mensaje de tu consulta.
-- **Compras (cuando estén disponibles):** datos necesarios para procesar el pago y darte acceso al contenido. El pago lo procesa la plataforma correspondiente; no almacenamos datos de tu tarjeta.
+- **Admisiones:** nombre, apellido, email, WhatsApp, país, zona horaria, disponibilidad, preferencia de contacto y estado administrativo. No solicitamos diagnósticos ni historias clínicas.
+- **Cuenta profesional:** nombre, email, contraseña protegida con hash, progreso educativo, evaluaciones y certificados.
+- **Compras:** datos necesarios para procesar el pago y darte acceso al contenido, incluido el comprobante privado cuando elegís transferencia. El pago lo procesa la plataforma correspondiente; no almacenamos datos de tu tarjeta.
 - **Datos de navegación:** métricas agregadas y anónimas para entender cómo se usa el sitio.
 
 ## Para qué los usamos
 
 - Responder tus consultas.
 - Gestionar inscripciones y accesos a contenidos.
-- Enviarte información que hayas solicitado.
+- Enviar confirmaciones, recuperación de acceso y recordatorios relacionados con tus compras y encuentros.
+- Proteger las cuentas y prevenir abuso mediante límites temporales de solicitudes.
 
 No vendemos ni cedemos tus datos a terceros con fines comerciales.
 
@@ -52,6 +57,6 @@ Podés pedirnos en cualquier momento acceder, rectificar o eliminar tus datos es
 
 ## Terceros
 
-Usamos servicios de terceros para el funcionamiento del sitio (hosting, procesamiento de pagos, email y analítica). Cada uno trata los datos según sus propias políticas.
+Usamos servicios de terceros para el funcionamiento del sitio (Vercel para hosting y archivos, PostgreSQL para datos, Mercado Pago para pagos y el proveedor de email configurado para comunicaciones transaccionales). Cada uno trata los datos según sus propias políticas.
 
 _Última actualización: 2026._`;

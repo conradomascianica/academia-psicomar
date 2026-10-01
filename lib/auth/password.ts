@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 
 export function hashearPassword(plano: string): Promise<string> {
-  return bcrypt.hash(plano, 10);
+  return bcrypt.hash(plano, 12);
 }
 
 export function verificarPassword(

@@ -28,8 +28,8 @@ export default async function QuienesSomosPage() {
               Quiénes somos
             </span>
             <h1 className="mt-3 text-4xl text-tinta md:text-5xl">
-              Dos psicólogas. Una misma idea: hacer de la psicología algo un poco
-              más cercano.
+              Dos psicólogas. Una misma idea: hacer de la psicología algo un
+              poco más cercano.
             </h1>
             <Prosa className="mt-5 text-[17px]">{historiaEquipo}</Prosa>
           </div>
@@ -63,11 +63,14 @@ export default async function QuienesSomosPage() {
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
           <h2 className="text-3xl text-white">¿Empezamos?</h2>
           <p className="text-white/80">
-            Si querés iniciar un proceso, escribinos por WhatsApp. Si sos
+            Si querés iniciar un proceso, solicitá una admisión. Si sos
             profesional, mirá las formaciones que tenemos abiertas.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <TerapiaPopover alineacion="centro" etiqueta="Quiero comenzar terapia" />
+            <TerapiaPopover
+              alineacion="centro"
+              etiqueta="Quiero comenzar terapia"
+            />
             <LinkButton
               href="/formaciones"
               variante="contorno"

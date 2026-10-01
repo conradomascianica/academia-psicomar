@@ -6,6 +6,8 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { usuarios } from "@/db/schema";
 import { verificarPassword } from "@/lib/auth/password";
+import { limitar, limitarSolicitud, safeError } from "@/lib/platform/security";
+import { destinoSeguro } from "@/lib/platform/rules";
 import { crearSesion, borrarSesion } from "@/lib/auth/session";
 
 const schema = z.object({
@@ -30,6 +32,7 @@ export async function iniciarSesion(
   }
 
   const { email, password } = parsed.data;
+  try { await limitarSolicitud("login", 30); await limitar("login-email",email,8); } catch(e) { return {error:safeError(e)}; }
 
   const filas = await db
     .select()
@@ -40,18 +43,20 @@ export async function iniciarSesion(
 
   // Mensaje genérico para no revelar si el email existe.
   const generico = { error: "Email o contraseña incorrectos." };
-  if (!usuario) return generico;
 
-  const ok = await verificarPassword(password, usuario.passwordHash);
-  if (!ok) return generico;
+
+  const ok = await verificarPassword(password, usuario?.passwordHash ?? "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxI3W/QXAELJBdgQr.j.Gt0TPfy");
+  if (!usuario || !ok) return generico;
 
   await crearSesion({
     userId: usuario.id,
     rol: usuario.rol,
     nombre: usuario.nombre,
+    sessionVersion: usuario.sessionVersion,
   });
 
-  redirect(usuario.rol === "admin" ? "/admin" : "/mi-cuenta");
+  const volver = destinoSeguro(formData.get("volver"));
+  redirect(usuario.rol === "admin" ? "/admin" : volver || "/cuenta");
 }
 
 export async function cerrarSesion(): Promise<void> {

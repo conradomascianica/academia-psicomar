@@ -10,6 +10,15 @@ if (!connectionString) {
   );
 }
 
+if (
+  process.env.VERCEL_ENV === "preview" &&
+  process.env.PSICOMAR_PREVIEW_DATABASE_CONFIRMED !== "true"
+) {
+  throw new Error(
+    "La preview requiere una base aislada y PSICOMAR_PREVIEW_DATABASE_CONFIRMED=true.",
+  );
+}
+
 // En serverless conviene reutilizar la conexión entre invocaciones.
 // `prepare: false` es necesario con el pooler de Neon (pgbouncer).
 const globalForDb = globalThis as unknown as {
@@ -18,8 +27,11 @@ const globalForDb = globalThis as unknown as {
 
 const client =
   globalForDb._sql ??
-  postgres(connectionString, { prepare: false, max: 1 });
+  postgres(connectionString, {
+    prepare: process.env.PSICOMAR_LOCAL_TEST === "1",
+    max: 1,
+  });
 
-if (process.env.NODE_ENV !== "production") globalForDb._sql = client;
+globalForDb._sql = client;
 
 export const db = drizzle(client, { schema, casing: "snake_case" });

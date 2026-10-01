@@ -11,6 +11,7 @@ import {
   formaciones,
   productos,
   supervision,
+  ofertas,
 } from "@/db/schema";
 import { requerirAdmin } from "@/lib/auth/dal";
 import { str, bool, num, opt, parseLista, slugify } from "@/lib/admin/form";
@@ -30,10 +31,7 @@ export async function guardarFormacion(id: string, fd: FormData) {
     nombre,
     slug,
     tipo: str(fd, "tipo") as "taller" | "curso" | "curso_grabado",
-    modalidad: str(fd, "modalidad") as
-      | "online_vivo"
-      | "grabado"
-      | "presencial",
+    modalidad: str(fd, "modalidad") as "online_vivo" | "grabado" | "presencial",
     resumen: str(fd, "resumen"),
     descripcion: str(fd, "descripcion"),
     paraQuien: str(fd, "paraQuien"),
@@ -57,7 +55,17 @@ export async function guardarFormacion(id: string, fd: FormData) {
   if (id === "nuevo") {
     await db.insert(formaciones).values(datos);
   } else {
-    await db.update(formaciones).set(datos).where(eq(formaciones.id, id));
+    await db.transaction(async (tx) => {
+      await tx.update(formaciones).set(datos).where(eq(formaciones.id, id));
+      await tx
+        .update(ofertas)
+        .set({
+          clave: `curso:${slug}`,
+          nombre,
+          ...(datos.estado === "borrador" ? { activa: false } : {}),
+        })
+        .where(eq(ofertas.formacionId, id));
+    });
   }
   revalidarSitio();
   redirect("/admin/formaciones");
@@ -65,7 +73,22 @@ export async function guardarFormacion(id: string, fd: FormData) {
 
 export async function borrarFormacion(id: string) {
   await requerirAdmin();
-  await db.delete(formaciones).where(eq(formaciones.id, id));
+  const linked = await db
+    .select({ id: ofertas.id })
+    .from(ofertas)
+    .where(eq(ofertas.formacionId, id));
+  if (linked.length) {
+    await db.transaction(async (tx) => {
+      await tx
+        .update(formaciones)
+        .set({ estado: "borrador" })
+        .where(eq(formaciones.id, id));
+      await tx
+        .update(ofertas)
+        .set({ activa: false })
+        .where(eq(ofertas.formacionId, id));
+    });
+  } else await db.delete(formaciones).where(eq(formaciones.id, id));
   revalidarSitio();
   redirect("/admin/formaciones");
 }
@@ -94,7 +117,17 @@ export async function guardarProducto(id: string, fd: FormData) {
   if (id === "nuevo") {
     await db.insert(productos).values(datos);
   } else {
-    await db.update(productos).set(datos).where(eq(productos.id, id));
+    await db.transaction(async (tx) => {
+      await tx.update(productos).set(datos).where(eq(productos.id, id));
+      await tx
+        .update(ofertas)
+        .set({
+          clave: `herramienta:${datos.slug}`,
+          nombre,
+          ...(datos.estado === "borrador" ? { activa: false } : {}),
+        })
+        .where(eq(ofertas.productoId, id));
+    });
   }
   revalidarSitio();
   redirect("/admin/productos");
@@ -102,7 +135,22 @@ export async function guardarProducto(id: string, fd: FormData) {
 
 export async function borrarProducto(id: string) {
   await requerirAdmin();
-  await db.delete(productos).where(eq(productos.id, id));
+  const linked = await db
+    .select({ id: ofertas.id })
+    .from(ofertas)
+    .where(eq(ofertas.productoId, id));
+  if (linked.length) {
+    await db.transaction(async (tx) => {
+      await tx
+        .update(productos)
+        .set({ estado: "borrador" })
+        .where(eq(productos.id, id));
+      await tx
+        .update(ofertas)
+        .set({ activa: false })
+        .where(eq(ofertas.productoId, id));
+    });
+  } else await db.delete(productos).where(eq(productos.id, id));
   revalidarSitio();
   redirect("/admin/productos");
 }

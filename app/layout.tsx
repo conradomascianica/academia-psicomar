@@ -52,7 +52,10 @@ export const metadata: Metadata = {
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: process.env.VERCEL_ENV !== "preview",
+    follow: process.env.VERCEL_ENV !== "preview",
+  },
   alternates: { canonical: "/" },
 };
 

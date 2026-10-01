@@ -1,3 +1,4 @@
+import { CompraOferta } from "@/components/platform/CompraOferta";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -9,11 +10,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { etiquetaModalidad } from "@/components/FormacionCard";
 import { IconoCheck, IconoFlecha } from "@/components/ui/iconos";
 import { site, SITE_URL } from "@/lib/site";
-import {
-  getFormacion,
-  getSlugsFormaciones,
-  precioARS,
-} from "@/lib/content";
+import { getFormacion, getSlugsFormaciones } from "@/lib/content";
 
 export async function generateStaticParams() {
   return (await getSlugsFormaciones()).map((slug) => ({ slug }));
@@ -64,16 +61,6 @@ export default async function FormacionPage({
             name: site.name,
             url: SITE_URL,
           },
-          ...(f.precio
-            ? {
-                offers: {
-                  "@type": "Offer",
-                  price: f.precio,
-                  priceCurrency: "ARS",
-                  category: f.enVivo ? "Curso en vivo" : "Curso grabado",
-                },
-              }
-            : {}),
         }}
       />
 
@@ -151,37 +138,15 @@ export default async function FormacionPage({
                     {f.docentes.join(" · ")}
                   </dd>
                 </div>
-                <div className="flex flex-col gap-0.5 pt-3">
-                  <dt className="text-tinta-suave">Precio</dt>
-                  <dd className="text-lg font-semibold text-tinta">
-                    {precioARS(f.precio)}
-                  </dd>
-                </div>
               </dl>
-
-              {f.enVivo ? (
-                <LinkButton href="/contacto" anchoCompleto>
-                  Quiero más info
-                </LinkButton>
-              ) : (
-                <LinkButton href="/contacto" anchoCompleto>
-                  Quiero este curso
-                </LinkButton>
-              )}
-              <p className="text-center text-xs text-tinta-suave">
-                El pago online con Mercado Pago estará disponible muy pronto.
-              </p>
+              <CompraOferta clave={`curso:${f.slug}`} />
             </div>
           </aside>
         </div>
 
         <div className="mt-12">
           <LinkButton href="/formaciones" variante="fantasma">
-            <IconoFlecha
-              width={16}
-              height={16}
-              className="rotate-180"
-            />
+            <IconoFlecha width={16} height={16} className="rotate-180" />
             Volver a formaciones
           </LinkButton>
         </div>

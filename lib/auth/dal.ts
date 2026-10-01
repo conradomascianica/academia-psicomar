@@ -5,34 +5,39 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { usuarios } from "@/db/schema";
 import { leerSesion } from "./session";
-
-/** Devuelve la sesión o redirige a /acceso. Usar al tope de páginas protegidas. */
-export const verificarSesion = cache(async () => {
-  const sesion = await leerSesion();
-  if (!sesion) redirect("/acceso");
-  return sesion;
-});
-
-/** Igual que verificarSesion pero exige rol admin. */
-export const requerirAdmin = cache(async () => {
-  const sesion = await verificarSesion();
-  if (sesion.rol !== "admin") redirect("/acceso");
-  return sesion;
-});
-
-/** Datos completos del usuario logueado (o null). */
 export const usuarioActual = cache(async () => {
-  const sesion = await leerSesion();
-  if (!sesion) return null;
-  const filas = await db
+  const s = await leerSesion();
+  if (!s) return null;
+  const [u] = await db
     .select({
       id: usuarios.id,
       email: usuarios.email,
       nombre: usuarios.nombre,
       rol: usuarios.rol,
+      sessionVersion: usuarios.sessionVersion,
+      emailVerifiedAt: usuarios.emailVerifiedAt,
     })
     .from(usuarios)
-    .where(eq(usuarios.id, sesion.userId))
+    .where(eq(usuarios.id, s.userId))
     .limit(1);
-  return filas[0] ?? null;
+  if (!u || u.rol !== s.rol || u.sessionVersion !== (s.sessionVersion ?? 0))
+    return null;
+  return u;
+});
+export const verificarSesion = cache(async () => {
+  const u = await usuarioActual();
+  if (!u) redirect("/acceso");
+  return { ...u, userId: u.id };
+});
+export const requerirAdmin = cache(async () => {
+  const u = await verificarSesion();
+  if (u.rol !== "admin") redirect("/cuenta");
+  return u;
+});
+export const requerirProfesional = cache(async () => {
+  const u = await usuarioActual();
+  if (!u) redirect("/ingresar");
+  if (u.rol === "admin") redirect("/admin");
+  if (u.rol !== "profesional") redirect("/");
+  return u;
 });

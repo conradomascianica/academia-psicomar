@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { IconoFlecha } from "@/components/ui/iconos";
-import { precioARS } from "@/lib/content";
 import type { Formacion } from "@/content/types";
 
 const ETIQUETA_TIPO: Record<Formacion["tipo"], string> = {
@@ -35,8 +34,8 @@ export function FormacionCard({ formacion }: { formacion: Formacion }) {
           <dd>{formacion.duracion}</dd>
         </div>
         <div className="flex gap-1.5">
-          <dt className="font-medium text-tinta">Precio:</dt>
-          <dd>{precioARS(formacion.precio)}</dd>
+          <dt className="font-medium text-tinta">Inscripción:</dt>
+          <dd>Consultá los medios de pago en la propuesta</dd>
         </div>
       </dl>
       <span className="relative z-10 mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-mar-700">

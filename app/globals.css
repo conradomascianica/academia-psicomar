@@ -185,3 +185,29 @@
     }
   }
 }
+
+@theme { --color-navy: #17384b; --color-cyan-soft: #b9dde4; }
+@layer components {
+ .eyebrow {font-family:var(--font-sans);font-size:.68rem;font-weight:600;letter-spacing:.18em;line-height:1.5;text-transform:uppercase;}
+ .path-card {display:flex;flex-direction:column;padding:1.4rem;border-radius:.6rem;border:1px solid rgba(23,56,75,.12);transition:transform .2s;}
+ .path-card:hover {transform:translateY(-3px);}
+ .btn-primary {display:inline-flex;align-items:center;justify-content:center;min-height:46px;background:var(--color-mar-700);color:white;border-radius:999px;padding:.7rem 1.4rem;font-size:.9rem;font-weight:500;cursor:pointer;}
+ .btn-primary:hover {background:var(--color-navy);}
+ .btn-primary:disabled {opacity:.55;cursor:wait;}
+ .platform-form {display:flex;flex-direction:column;gap:1.2rem;max-width:52rem;}
+ .platform-form label {display:flex;flex-direction:column;gap:.45rem;font-size:.9rem;font-weight:500;}
+ .platform-form input:not([type=checkbox]):not([type=radio]),.platform-form select,.platform-form textarea {width:100%;min-height:46px;border:1px solid var(--color-mar-300);border-radius:.5rem;padding:.75rem;background:white;color:var(--color-tinta);font-size:1rem;font-weight:400;}
+ .platform-form .check-label {flex-direction:row;align-items:flex-start;gap:.7rem;font-weight:400;}
+ .check-label input {margin-top:.2rem;width:1.2rem;height:1.2rem;flex-shrink:0;}
+ .platform-form a {text-decoration:underline;text-underline-offset:3px;}
+ .form-error {background:#fff0ed;color:#8a2d24;padding:1rem;border-radius:.5rem;}
+ .form-message {background:var(--color-mar-50);padding:1rem;border-left:3px solid var(--color-mar-500);}
+ .table-scroll {overflow:auto;border:1px solid var(--color-mar-200);border-radius:.7rem;background:white;}
+ .table-scroll table {width:100%;text-align:left;border-collapse:collapse;font-size:.85rem;}
+ .table-scroll th,.table-scroll td {padding:1rem;border-bottom:1px solid var(--color-mar-100);}
+ .table-scroll th {background:var(--color-mar-50);font-weight:500;white-space:nowrap;}
+ .table-scroll a {text-decoration:underline;}
+ .empty-state {border:1px dashed var(--color-mar-300);padding:2rem;border-radius:1rem;margin-top:1.5rem;color:var(--color-tinta-suave);}
+ .skip-link {position:absolute;left:1rem;top:-5rem;background:white;padding:1rem;z-index:100;}
+ .skip-link:focus {top:1rem;}
+}

@@ -1,3 +1,4 @@
+import { CompraOferta } from "@/components/platform/CompraOferta";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -9,7 +10,7 @@ import { LinkButton } from "@/components/ui/Button";
 import { JsonLd } from "@/components/JsonLd";
 import { IconoCheck, IconoFlecha } from "@/components/ui/iconos";
 import { site, SITE_URL } from "@/lib/site";
-import { getProducto, getSlugsProductos, precioARS } from "@/lib/content";
+import { getProducto, getSlugsProductos } from "@/lib/content";
 
 export async function generateStaticParams() {
   return (await getSlugsProductos()).map((slug) => ({ slug }));
@@ -50,17 +51,6 @@ export default async function ProductoPage({
           description: p.seo?.description ?? p.resumen,
           url: `${SITE_URL}/recursos/${p.slug}`,
           brand: { "@type": "Brand", name: site.name },
-          ...(p.precio
-            ? {
-                offers: {
-                  "@type": "Offer",
-                  price: p.precio,
-                  priceCurrency: "ARS",
-                  availability: "https://schema.org/InStock",
-                  url: `${SITE_URL}/recursos/${p.slug}`,
-                },
-              }
-            : {}),
         }}
       />
 
@@ -79,7 +69,7 @@ export default async function ProductoPage({
           <div className="flex flex-col gap-8">
             <div className="flex flex-wrap gap-2">
               <Badge tono="coral">Pack de herramientas</Badge>
-              <Badge tono="neutro">PDF · descarga inmediata</Badge>
+              <Badge tono="neutro">Archivos digitales</Badge>
             </div>
             <h1 className="text-4xl text-tinta md:text-5xl">{p.nombre}</h1>
             <Prosa>{p.descripcion}</Prosa>
@@ -116,16 +106,7 @@ export default async function ProductoPage({
                 ratio="4 / 3"
                 className="rounded-xl"
               />
-              <p className="text-2xl font-semibold text-tinta">
-                {precioARS(p.precio)}
-              </p>
-              <LinkButton href="/contacto" anchoCompleto>
-                Quiero este pack
-              </LinkButton>
-              <p className="text-center text-xs text-tinta-suave">
-                El pago con Mercado Pago y la descarga automática se activan muy
-                pronto. Mientras tanto, escribinos y te lo enviamos.
-              </p>
+              <CompraOferta clave={`herramienta:${p.slug}`} />
             </div>
           </aside>
         </div>

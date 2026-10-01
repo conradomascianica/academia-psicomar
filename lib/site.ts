@@ -13,21 +13,21 @@
  *  3. Fallback fijo (dev / previews).
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.NEXT_PUBLIC_SITE_URL) ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "https://academia-psicomar.vercel.app")
 ).replace(/\/$/, "");
 
 export const site = {
-  name: "Academia PsicoMar",
-  shortName: "PsicoMar",
-  tagline: "Psicología, formación y herramientas para la práctica.",
+  name: "PSICOMAR",
+  shortName: "PSICOMAR",
+  tagline: "Psicología & Formación",
   description:
-    "Academia PsicoMar es un espacio de psicología basada en evidencia: terapia online para adultos y formación, supervisión y herramientas concretas para profesionales de salud mental.",
+    "PSICOMAR es un espacio de psicología basada en evidencia: terapia online para adultos y formación, supervisión y herramientas concretas para profesionales de salud mental.",
   url: SITE_URL,
   locale: "es_AR",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hola@academiapsicomar.com",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "psicomar.km@gmail.com",
   instagram: {
     academia: "academia.psicomar",
     kiara: "lic.marrellikiara",
@@ -63,11 +63,9 @@ export function instagramUrl(handle: string): string {
 /** Navegación principal. */
 export const navPrincipal = [
   { href: "/", label: "Inicio" },
+  { href: "/terapia", label: "Terapia" },
+  { href: "/academia", label: "Academia" },
   { href: "/quienes-somos", label: "Quiénes somos" },
-  { href: "/atencion-clinica", label: "Atención clínica" },
-  { href: "/para-profesionales", label: "Para profesionales" },
-  { href: "/formaciones", label: "Formaciones" },
-  { href: "/recursos", label: "Recursos" },
   { href: "/blog", label: "Blog" },
   { href: "/contacto", label: "Contacto" },
 ] as const;
@@ -75,11 +73,11 @@ export const navPrincipal = [
 /** Links del footer, agrupados. */
 export const footerLinks = [
   {
-    titulo: "Academia PsicoMar",
+    titulo: "PSICOMAR",
     links: [
       { href: "/quienes-somos", label: "Quiénes somos" },
-      { href: "/atencion-clinica", label: "Atención clínica" },
-      { href: "/para-profesionales", label: "Para profesionales" },
+      { href: "/terapia", label: "Terapia" },
+      { href: "/academia", label: "Academia PsicoMar" },
       { href: "/blog", label: "Blog" },
       { href: "/contacto", label: "Contacto" },
     ],
@@ -89,7 +87,7 @@ export const footerLinks = [
     links: [
       { href: "/formaciones", label: "Todas las formaciones" },
       { href: "/formaciones?tipo=talleres", label: "Talleres y cursos" },
-      { href: "/supervisiones", label: "Supervisiones grupales" },
+      { href: "/supervisiones", label: "Supervisiones" },
       { href: "/recursos", label: "Packs de herramientas" },
       { href: "/formaciones?tipo=grabados", label: "Cursos grabados" },
     ],

@@ -11,12 +11,11 @@ export default async function proxy(req: NextRequest) {
   const sesion = await verificarToken(token);
 
   const esAdmin = pathname.startsWith("/admin");
-  const esCuenta = pathname.startsWith("/mi-cuenta");
-  const esAcceso = pathname === "/acceso";
+  const esCuenta = pathname.startsWith("/cuenta") || pathname === "/checkout";
 
   if ((esAdmin || esCuenta) && !sesion) {
-    const url = new URL("/acceso", req.url);
-    url.searchParams.set("volver", pathname);
+    const url = new URL(esCuenta ? "/ingresar" : "/acceso", req.url);
+    url.searchParams.set("volver", pathname + req.nextUrl.search);
     return NextResponse.redirect(url);
   }
 
@@ -24,15 +23,9 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (esAcceso && sesion) {
-    return NextResponse.redirect(
-      new URL(sesion.rol === "admin" ? "/admin" : "/mi-cuenta", req.url),
-    );
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/mi-cuenta/:path*", "/acceso"],
+  matcher: ["/admin/:path*", "/cuenta/:path*", "/checkout"],
 };

@@ -7,6 +7,13 @@ import { cerrarSesion } from "@/lib/acciones/auth";
 
 const LINKS = [
   { href: "/admin", label: "Inicio", exact: true },
+  { href: "/admin/admisiones", label: "Admisiones" },
+  { href: "/admin/profesionales", label: "Profesionales" },
+  { href: "/admin/ventas", label: "Ventas y transferencias" },
+  { href: "/admin/academia", label: "Cursos y contenidos" },
+  { href: "/admin/cupones", label: "Cupones" },
+  { href: "/admin/certificados", label: "Certificados" },
+  { href: "/admin/configuracion", label: "Configuración y correos" },
   { href: "/admin/formaciones", label: "Formaciones" },
   { href: "/admin/productos", label: "Packs de herramientas" },
   { href: "/admin/supervision", label: "Supervisión" },

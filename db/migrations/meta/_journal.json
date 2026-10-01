@@ -8,6 +8,20 @@
       "when": 1788822804743,
       "tag": "0000_inicial",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790566942078,
+      "tag": "0001_lyrical_thunderbolts",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790622269618,
+      "tag": "0002_clever_vin_gonzales",
+      "breakpoints": true
     }
   ]
 }

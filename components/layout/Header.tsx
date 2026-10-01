@@ -1,117 +1,98 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/cn";
+import { useState, useEffect, useRef } from "react";
 import { navPrincipal } from "@/lib/site";
 import { Logo } from "@/components/Logo";
-import { LinkButton } from "@/components/ui/Button";
-import { TerapiaPopover } from "@/components/TerapiaPopover";
-import { IconoMenu, IconoCerrar } from "@/components/ui/iconos";
-
 export function Header() {
   const pathname = usePathname();
-  const [abierto, setAbierto] = useState(false);
-
-  // Cerrar el menú al cambiar de ruta (sin efecto: comparamos en render).
-  const [rutaPrevia, setRutaPrevia] = useState(pathname);
-  if (pathname !== rutaPrevia) {
-    setRutaPrevia(pathname);
-    if (abierto) setAbierto(false);
-  }
-
+  const [open, setOpen] = useState(false);
+  const button = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    document.body.style.overflow = abierto ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        button.current?.focus();
+      }
     };
-  }, [abierto]);
-
-  const activo = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
-
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
   return (
-    <header className="sticky top-0 z-40 border-b border-mar-100 bg-crema/90 backdrop-blur">
-      <div className="contenedor flex h-16 items-center justify-between gap-3 md:h-[4.5rem]">
-        <Logo className="shrink-0" alto={38} />
-
+    <header className="sticky top-0 z-40 bg-crema border-b border-mar-200">
+      <a href="#contenido" className="skip-link">
+        Saltar al contenido
+      </a>
+      <div className="contenedor flex min-h-20 items-center justify-between gap-4">
+        <Logo alto={40} />
         <nav
           aria-label="Navegación principal"
-          className="hidden items-center gap-0.5 lg:flex"
+          className="hidden lg:flex gap-6 text-sm"
         >
           {navPrincipal
-            .filter((item) => item.href !== "/")
-            .map((item) => (
+            .filter((n) => n.href !== "/")
+            .map((n) => (
               <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "whitespace-nowrap rounded-full px-2.5 py-2 text-[0.9rem] transition-colors",
-                  activo(item.href)
-                    ? "bg-mar-50 text-mar-800"
-                    : "text-tinta-suave hover:text-tinta",
-                )}
+                aria-current={pathname === n.href ? "page" : undefined}
+                className={
+                  pathname === n.href
+                    ? "font-semibold underline underline-offset-8"
+                    : "hover:text-mar-600"
+                }
+                key={n.href}
+                href={n.href}
               >
-                {item.label}
+                {n.label}
               </Link>
             ))}
         </nav>
-
-        <div className="hidden items-center gap-2 md:flex">
-          <span className="hidden 2xl:inline-flex">
-            <LinkButton
-              href="/formaciones"
-              variante="contorno"
-              tamano="sm"
-              className="whitespace-nowrap"
-            >
-              Ver formaciones
-            </LinkButton>
-          </span>
-          <TerapiaPopover />
+        <div className="flex items-center gap-4">
+          <Link
+            href="/cuenta"
+            className="hidden sm:block text-sm underline underline-offset-4"
+          >
+            Ingresar
+          </Link>
+          <Link
+            href="/terapia#solicitud"
+            className="hidden lg:inline-flex btn-primary"
+          >
+            Solicitar admisión
+          </Link>
+          <button
+            ref={button}
+            type="button"
+            className="lg:hidden min-w-12 min-h-12 border rounded-full"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-controls="menu-mobile"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          >
+            {open ? "×" : "☰"}
+          </button>
         </div>
-
-        <button
-          type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-full text-tinta md:hidden"
-          aria-label={abierto ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={abierto}
-          onClick={() => setAbierto((v) => !v)}
-        >
-          {abierto ? (
-            <IconoCerrar width={24} height={24} />
-          ) : (
-            <IconoMenu width={24} height={24} />
-          )}
-        </button>
       </div>
-
-      {abierto && (
-        <div className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-mar-100 bg-crema px-5 py-6 md:hidden">
-          <nav aria-label="Navegación principal" className="flex flex-col gap-1">
-            {navPrincipal.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "rounded-xl px-3 py-3 text-base",
-                  activo(item.href)
-                    ? "bg-mar-50 text-mar-800"
-                    : "text-tinta",
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-6 flex flex-col gap-3">
-            <TerapiaPopover className="[&>button]:w-full" alineacion="centro" />
-            <LinkButton href="/formaciones" variante="contorno" anchoCompleto>
-              Ver formaciones
-            </LinkButton>
-          </div>
-        </div>
+      {open && (
+        <nav
+          id="menu-mobile"
+          aria-label="Menú móvil"
+          className="lg:hidden max-h-[75dvh] overflow-y-auto border-t border-mar-200 px-5 py-5 bg-crema"
+        >
+          {[
+            ...navPrincipal,
+            { href: "/cuenta", label: "Ingresar a Mi Academia" },
+          ].map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              onClick={() => setOpen(false)}
+              className="block py-3 border-b border-mar-100"
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
       )}
     </header>
   );

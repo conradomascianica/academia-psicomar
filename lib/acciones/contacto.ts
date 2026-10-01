@@ -3,7 +3,10 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { consultas } from "@/db/schema";
-import { enviarMail, layoutMail } from "@/lib/email";
+import { encolarCorreo } from "@/lib/platform/mail";
+import { limitarSolicitud, limitar } from "@/lib/platform/security";
+import { escapeHtml } from "@/lib/platform/rules";
+import { revalidatePath } from "next/cache";
 import { site } from "@/lib/site";
 
 export interface EstadoContacto {
@@ -13,12 +16,21 @@ export interface EstadoContacto {
 }
 
 const schema = z.object({
-  nombre: z.string().trim().min(2, "Contanos tu nombre."),
-  email: z.string().trim().toLowerCase().email("Ingresá un email válido."),
+  nombre: z.string().trim().min(2, "Contanos tu nombre.").max(120),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Ingresá un email válido.")
+    .max(254),
   motivo: z.enum(["formacion", "supervision", "herramientas", "otro"], {
     message: "Elegí un motivo.",
   }),
-  mensaje: z.string().trim().min(10, "Escribí un mensaje un poco más largo."),
+  mensaje: z
+    .string()
+    .trim()
+    .min(10, "Escribí un mensaje un poco más largo.")
+    .max(3000),
 });
 
 const ETIQUETA_MOTIVO: Record<string, string> = {
@@ -42,7 +54,9 @@ export async function enviarConsulta(
   if (!parsed.success) {
     const errores: EstadoContacto["errores"] = {};
     for (const issue of parsed.error.issues) {
-      const campo = issue.path[0] as keyof NonNullable<EstadoContacto["errores"]>;
+      const campo = issue.path[0] as keyof NonNullable<
+        EstadoContacto["errores"]
+      >;
       if (campo && !errores[campo]) errores[campo] = issue.message;
     }
     return { ok: false, errores };
@@ -50,23 +64,27 @@ export async function enviarConsulta(
 
   const { nombre, email, motivo, mensaje } = parsed.data;
 
-  await db.insert(consultas).values({ nombre, email, tipo: motivo, mensaje });
-
+  try {
+    await limitarSolicitud("contacto", 12);
+    await limitar("contacto-email", email, 5, 3600);
+  } catch {
+    return {
+      ok: false,
+      mensaje: "Esperá unos minutos antes de enviar otra consulta.",
+    };
+  }
+  const [consulta] = await db
+    .insert(consultas)
+    .values({ nombre, email, tipo: motivo, mensaje })
+    .returning();
   const destino = process.env.EMAIL_CONSULTAS || site.email;
-  await enviarMail({
-    to: destino,
-    replyTo: email,
-    subject: `Nueva consulta (${ETIQUETA_MOTIVO[motivo]}) — ${nombre}`,
-    html: layoutMail(
-      "Nueva consulta desde la web",
-      `<p><strong>Nombre:</strong> ${nombre}</p>
-       <p><strong>Email:</strong> ${email}</p>
-       <p><strong>Motivo:</strong> ${ETIQUETA_MOTIVO[motivo]}</p>
-       <p><strong>Mensaje:</strong></p>
-       <p style="white-space:pre-wrap">${mensaje.replace(/</g, "&lt;")}</p>`,
-    ),
-  });
-
+  await encolarCorreo(
+    `consulta:${consulta.id}`,
+    destino,
+    "Nueva consulta desde la web",
+    `<p>Nombre: ${escapeHtml(nombre)}</p><p>Email: ${escapeHtml(email)}</p><p>Motivo: ${escapeHtml(ETIQUETA_MOTIVO[motivo])}</p><p style="white-space:pre-wrap">${escapeHtml(mensaje)}</p>`,
+  );
+  revalidatePath("/admin/consultas");
   return {
     ok: true,
     mensaje:

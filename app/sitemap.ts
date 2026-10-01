@@ -16,8 +16,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const estaticas = [
     "",
     "/quienes-somos",
-    "/atencion-clinica",
-    "/para-profesionales",
+    "/terapia",
+    "/academia",
     "/formaciones",
     "/supervisiones",
     "/recursos",

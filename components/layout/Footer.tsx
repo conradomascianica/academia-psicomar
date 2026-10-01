@@ -60,7 +60,7 @@ export function Footer() {
           <p className="max-w-2xl">{DISCLAIMER_LEGAL}</p>
           <div className="flex shrink-0 flex-col gap-1 md:items-end">
             <p>
-              © {year} Academia PsicoMar · Kiara &amp; Maite Martelli
+              © {year} PSICOMAR · Psicología &amp; Formación
             </p>
             <p className="flex gap-3">
               <Link href="/terminos" className="hover:text-white">

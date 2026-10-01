@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Hero } from "@/components/home/Hero";
-import { Bifurcacion } from "@/components/home/Bifurcacion";
-import { PilaresPsicoMar } from "@/components/PilaresPsicoMar";
-import { ClinicaPreview } from "@/components/home/ClinicaPreview";
-import { ProfesionalesPreview } from "@/components/home/ProfesionalesPreview";
 import { InstagramStrip } from "@/components/InstagramStrip";
 import { Section, EncabezadoSeccion } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
@@ -36,8 +32,6 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
-      <Bifurcacion />
-      <PilaresPsicoMar fondo="arena" />
 
       {/* Quiénes somos — preview */}
       <Section fondo="crema" espaciado="amplio">
@@ -73,15 +67,12 @@ export default async function HomePage() {
         </div>
       </Section>
 
-      <ClinicaPreview />
-      <ProfesionalesPreview />
-
       {/* Formaciones destacadas */}
       <Section fondo="crema" espaciado="amplio">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <EncabezadoSeccion
             sobretitulo="Formaciones"
-            titulo="Lo que tenemos en agenda"
+            titulo="Seguí construyendo tu práctica"
           />
           <LinkButton href="/formaciones" variante="fantasma">
             Ver todas
@@ -140,9 +131,12 @@ export default async function HomePage() {
             aprender, compartir herramientas y hablar de clínica.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <TerapiaPopover alineacion="centro" etiqueta="Quiero comenzar terapia" />
+            <TerapiaPopover
+              alineacion="centro"
+              etiqueta="Quiero comenzar terapia"
+            />
             <LinkButton
-              href="/para-profesionales"
+              href="/academia"
               variante="contorno"
               className="border-white/40 text-white hover:bg-white/10"
             >

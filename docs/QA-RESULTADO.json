@@ -1,0 +1,29 @@
+{
+  "branch": "feat/psicomar-platform-v2",
+  "build": "passed",
+  "typecheck": "passed",
+  "lint": "passed",
+  "unit_tests": 8,
+  "database_integration": "passed",
+  "http": {
+    "passed": [
+      "Marketing, legales, auth y redirecciones responden",
+      "Panel completo y protección por rol",
+      "PDF, comprobantes y pedidos aislados por titular",
+      "Admisión idempotente y confirmación exige abono",
+      "Ingreso devuelve al checkout y crea cookie HttpOnly",
+      "Progreso, examen corregido en servidor y certificado único",
+      "Vencimiento bloquea contenido, mantiene PDF emitido",
+      "Registro impide escalamiento de rol",
+      "Tres intentos máximos y rechazo de replay de examen",
+      "Verificación de email de un solo uso",
+      "Coordinación educativa visible al titular, sin segunda sesión individual",
+      "Reset de un uso invalida sesiones anteriores",
+      "Cron protegido y pago no configurado no simula aprobación"
+    ],
+    "date": "2026-09-29T02:39:06.084Z"
+  },
+  "visual_qa": "blocked_browser_socket_permission",
+  "provider_qa": "blocked_missing_test_credentials",
+  "preview": "blocked_github_write_and_vercel_project_access"
+}

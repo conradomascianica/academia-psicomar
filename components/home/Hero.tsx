@@ -1,60 +1,69 @@
-import { LinkButton } from "@/components/ui/Button";
+import { TrackLink } from "@/components/platform/TrackLink";
 import { Foto } from "@/components/ui/Foto";
-import { Blob } from "@/components/ui/Ondas";
-import { TerapiaPopover } from "@/components/TerapiaPopover";
-import { IconoFormacion } from "@/components/ui/iconos";
 import { fotoAmbas } from "@/content/equipo";
-
 export function Hero() {
   return (
-    <section className="relative bg-bruma">
-      {/* capa decorativa: recorta los blobs sin recortar el contenido (popover) */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <Blob
-          className="left-[-10%] top-[-20%] h-[420px] w-[420px] opacity-60"
-          color="var(--color-salvia)"
-        />
-        <Blob
-          className="right-[-8%] bottom-[-30%] h-[380px] w-[380px] opacity-50"
-          color="var(--color-coral-100)"
-        />
-      </div>
-      <div className="contenedor relative grid gap-12 py-16 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-24">
-        <div className="flex flex-col gap-6">
-          <span className="inline-flex w-fit items-center rounded-full border border-mar-200 bg-white/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] text-mar-700">
-            Psicología basada en evidencia
-          </span>
-          <h1 className="text-4xl leading-[1.08] text-tinta md:text-[3.4rem]">
-            Psicología para la vida real.{" "}
-            <span className="text-mar-600">
-              Herramientas para transformar la práctica.
-            </span>
+    <section className="bg-bruma relative overflow-hidden">
+      <div className="contenedor grid gap-10 pt-12 pb-14 lg:grid-cols-[1.25fr_.75fr] lg:items-center lg:py-20">
+        <div>
+          <p className="eyebrow">PSICOMAR · PSICOLOGÍA & FORMACIÓN</p>
+          <h1 className="mt-6 text-[2.8rem] leading-[1.06] sm:text-6xl lg:text-[4.35rem]">
+            Psicología para
+            <br />
+            la vida real.
+            <br />
+            <em className="text-mar-600">Un espacio para vos.</em>
           </h1>
-          <p className="max-w-xl text-lg leading-relaxed text-tinta-suave">
-            Somos Kiara y Maite, psicólogas y fundadoras de Academia PsicoMar.
-            Creamos este espacio para acercar herramientas de psicología basadas
-            en evidencia: a quienes buscan comenzar un proceso terapéutico y a
-            quienes trabajan en salud mental y quieren seguir formándose.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-tinta-suave">
+            Acompañamiento humano y formación clínica.
+            <br className="hidden sm:block" /> Dos caminos, una misma mirada
+            basada en evidencia.
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <TerapiaPopover alineacion="izquierda" etiqueta="Quiero comenzar terapia" />
-            <LinkButton href="/para-profesionales" variante="contorno" tamano="md">
-              <IconoFormacion width={18} height={18} />
-              Soy profesional de salud mental
-            </LinkButton>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <TrackLink
+              evento="cta_terapia"
+              className="path-card bg-white"
+              href="/terapia"
+            >
+              <span className="eyebrow">01 / ATENCIÓN CLÍNICA</span>
+              <strong className="text-xl mt-3">Busco terapia</strong>
+              <span className="text-sm mt-2">
+                Quiero conocer cómo comenzar.
+              </span>
+              <span className="mt-5 text-sm font-semibold">
+                Solicitar admisión ↗
+              </span>
+            </TrackLink>
+            <TrackLink
+              evento="cta_academia"
+              className="path-card bg-navy text-white"
+              href="/academia"
+            >
+              <span className="eyebrow text-cyan-soft">
+                02 / ACADEMIA PSICOMAR
+              </span>
+              <strong className="text-xl mt-3">
+                Soy profesional de salud mental
+              </strong>
+              <span className="mt-5 text-sm font-semibold">
+                Explorar la academia ↗
+              </span>
+            </TrackLink>
           </div>
         </div>
-
-        <div className="relative">
+        <div className="relative lg:pl-4">
           <Foto
             src={fotoAmbas.src}
             alt={fotoAmbas.alt}
-            etiqueta="Foto de Kiara y Maite"
-            ratio="1 / 1"
+            etiqueta="Kiara y Maite"
+            ratio="4 / 5"
             priority
-            sizes="(max-width: 768px) 92vw, 460px"
-            className="mx-auto max-w-md md:ml-auto md:mr-0"
+            sizes="(max-width: 1024px) 90vw, 440px"
+            className="max-w-md mx-auto rounded-t-[10rem] rounded-b-lg"
           />
+          <p className="mt-4 text-sm text-tinta-suave">
+            Kiara y Maite / Fundadoras de PSICOMAR
+          </p>
         </div>
       </div>
     </section>

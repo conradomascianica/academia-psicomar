@@ -1,18 +1,14 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
 import { ContactForm } from "@/components/ContactForm";
-import { IconoInstagram, IconoWhatsApp } from "@/components/ui/iconos";
-import {
-  site,
-  instagramUrl,
-  whatsappLink,
-  MENSAJE_TERAPIA,
-} from "@/lib/site";
+import { IconoInstagram } from "@/components/ui/iconos";
+import { site, instagramUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contacto",
   description:
-    "¿Querés saber más sobre nuestros talleres, supervisiones o herramientas? Escribinos. Para empezar terapia, contactanos por WhatsApp.",
+    "¿Querés saber más sobre nuestros talleres, supervisiones o herramientas? Escribinos. Para empezar terapia, completá la solicitud de admisión.",
   alternates: { canonical: "/contacto" },
 };
 
@@ -40,28 +36,12 @@ export default function ContactoPage() {
           <div className="rounded-2xl border border-mar-100 bg-white p-6 shadow-suave">
             <h2 className="text-lg text-tinta">¿Vas a empezar terapia?</h2>
             <p className="mt-2 text-sm text-tinta-suave">
-              Ese camino es directo por WhatsApp con la psicóloga que elijas.
+              Completá la solicitud de admisión. PSICOMAR asigna profesional y
+              coordina el encuentro con vos.
             </p>
-            <div className="mt-4 flex flex-col gap-2">
-              <a
-                href={whatsappLink(site.whatsapp.kiara, MENSAJE_TERAPIA)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-mar-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-mar-800"
-              >
-                <IconoWhatsApp width={16} height={16} />
-                WhatsApp de Kiara
-              </a>
-              <a
-                href={whatsappLink(site.whatsapp.maite, MENSAJE_TERAPIA)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-mar-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-mar-800"
-              >
-                <IconoWhatsApp width={16} height={16} />
-                WhatsApp de Maite
-              </a>
-            </div>
+            <Link href="/terapia#solicitud" className="btn-primary mt-4">
+              Solicitar admisión
+            </Link>
           </div>
 
           <div className="rounded-2xl border border-mar-100 bg-white p-6 shadow-suave">
