@@ -8,16 +8,27 @@ export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        button.current?.focus();
-      }
+    const menu = dialog.current;
+    if (!menu) return;
+    if (!open) {
+      menu.close();
+      return;
+    }
+    menu.showModal();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onResize = () => {
+      if (desktop.matches) setOpen(false);
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    desktop.addEventListener("change", onResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      desktop.removeEventListener("change", onResize);
+      menu.close();
+    };
   }, [open]);
   return (
     <header className="sticky top-0 z-40 bg-crema border-b border-mar-200">
@@ -63,22 +74,40 @@ export function Header() {
           <button
             ref={button}
             type="button"
-            className="lg:hidden min-w-12 min-h-12 border rounded-full"
+            className="lg:hidden inline-flex items-center justify-center gap-2 min-h-12 px-4 rounded-full bg-navy text-white font-semibold shadow-suave"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-controls="menu-mobile"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
           >
-            {open ? "×" : "☰"}
+            <span aria-hidden="true">☰</span>
+            <span>Menú</span>
           </button>
         </div>
       </div>
-      {open && (
-        <nav
-          id="menu-mobile"
-          aria-label="Menú móvil"
-          className="lg:hidden max-h-[75dvh] overflow-y-auto border-t border-mar-200 px-5 py-5 bg-crema"
-        >
+      <dialog
+        ref={dialog}
+        className="mobile-menu"
+        aria-labelledby="mobile-menu-title"
+        onCancel={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          button.current?.focus();
+        }}
+      >
+        <div className="flex items-center justify-between gap-4 border-b border-mar-200 pb-5">
+          <h2 id="mobile-menu-title" className="text-2xl">
+            Menú
+          </h2>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => setOpen(false)}
+          >
+            Cerrar <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <nav id="menu-mobile" aria-label="Menú móvil" className="py-4">
           {[
             ...navPrincipal,
             { href: "/cuenta", label: "Ingresar a Mi Academia" },
@@ -87,13 +116,20 @@ export function Header() {
               key={n.href}
               href={n.href}
               onClick={() => setOpen(false)}
-              className="block py-3 border-b border-mar-100"
+              className="block rounded-lg px-3 py-4 border-b border-mar-200 text-lg font-semibold hover:bg-mar-100"
             >
               {n.label}
             </Link>
           ))}
         </nav>
-      )}
+        <Link
+          href="/terapia"
+          className="btn-primary w-full"
+          onClick={() => setOpen(false)}
+        >
+          Quiero comenzar terapia ↗
+        </Link>
+      </dialog>
     </header>
   );
 }

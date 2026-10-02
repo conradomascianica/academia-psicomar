@@ -1,10 +1,10 @@
 import { TrackLink } from "@/components/platform/TrackLink";
-import { Foto } from "@/components/ui/Foto";
-import { fotoAmbas } from "@/content/equipo";
-export function Hero() {
+import { EquipoInicio } from "@/components/home/EquipoInicio";
+import type { MiembroEquipo } from "@/content/types";
+export function Hero({ equipo }: { equipo: MiembroEquipo[] }) {
   return (
     <section className="bg-bruma relative overflow-hidden">
-      <div className="contenedor grid gap-10 pt-12 pb-14 lg:grid-cols-[1.25fr_.75fr] lg:items-center lg:py-20">
+      <div className="contenedor grid gap-10 pt-12 pb-14 lg:grid-cols-2 lg:items-center lg:py-20">
         <div>
           <p className="eyebrow">PSICOMAR · PSICOLOGÍA & FORMACIÓN</p>
           <h1 className="mt-6 text-[2.8rem] leading-[1.06] sm:text-6xl lg:text-[4.35rem]">
@@ -30,8 +30,8 @@ export function Hero() {
               <span className="text-sm mt-2">
                 Quiero conocer cómo comenzar.
               </span>
-              <span className="mt-5 text-sm font-semibold">
-                Solicitar admisión ↗
+              <span className="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-navy px-4 py-3 text-center text-sm font-semibold text-white shadow-suave">
+                Quiero comenzar terapia ↗
               </span>
             </TrackLink>
             <TrackLink
@@ -45,26 +45,13 @@ export function Hero() {
               <strong className="text-xl mt-3">
                 Soy profesional de salud mental
               </strong>
-              <span className="mt-5 text-sm font-semibold">
+              <span className="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-white px-4 py-3 text-center text-sm font-semibold text-navy shadow-suave">
                 Explorar la academia ↗
               </span>
             </TrackLink>
           </div>
         </div>
-        <div className="relative lg:pl-4">
-          <Foto
-            src={fotoAmbas.src}
-            alt={fotoAmbas.alt}
-            etiqueta="Kiara y Maite"
-            ratio="4 / 5"
-            priority
-            sizes="(max-width: 1024px) 90vw, 440px"
-            className="max-w-md mx-auto rounded-t-[10rem] rounded-b-lg"
-          />
-          <p className="mt-4 text-sm text-tinta-suave">
-            Kiara y Maite / Fundadoras de PSICOMAR
-          </p>
-        </div>
+        <EquipoInicio equipo={equipo} />
       </div>
     </section>
   );

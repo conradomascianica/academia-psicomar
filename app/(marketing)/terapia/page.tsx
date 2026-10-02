@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { randomUUID } from "node:crypto";
 import { AdmisionForm } from "@/components/platform/AdmisionForm";
 import { LinkButton } from "@/components/ui/Button";
+import { EquipoInicio } from "@/components/home/EquipoInicio";
+import { getEquipo } from "@/lib/content";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Terapia online y admisión",
@@ -9,7 +11,8 @@ export const metadata: Metadata = {
     "Solicitá una admisión de 45–50 minutos por Google Meet. PSICOMAR asigna profesional y coordina con vos.",
   alternates: { canonical: "/terapia" },
 };
-export default function Terapia() {
+export default async function Terapia() {
+  const equipo = await getEquipo();
   return (
     <>
       <section className="bg-bruma py-16 md:py-24">
@@ -29,26 +32,7 @@ export default function Terapia() {
               Solicitar una admisión
             </LinkButton>
           </div>
-          <div className="border-l border-mar-300 p-6 md:self-center">
-            <p className="eyebrow">ASÍ EMPEZAMOS</p>
-            <ol className="mt-6 space-y-5 leading-relaxed">
-              <li>
-                <b>01 / Completás la solicitud.</b>
-                <br />
-                Solo datos de contacto y disponibilidad.
-              </li>
-              <li>
-                <b>02 / Coordinamos con vos.</b>
-                <br />
-                El equipo asigna profesional y acuerdan el encuentro.
-              </li>
-              <li>
-                <b>03 / Confirmamos la admisión.</b>
-                <br />
-                Después del abono, recibís los datos de Google Meet.
-              </li>
-            </ol>
-          </div>
+          <EquipoInicio equipo={equipo} />
         </div>
       </section>
       <section className="contenedor py-16 grid gap-12 lg:grid-cols-[.85fr_1.15fr]">
@@ -74,7 +58,27 @@ export default function Terapia() {
               <dd>Se coordina con la profesional antes de confirmar.</dd>
             </div>
           </dl>
-          <h3 className="text-2xl">¿Y después?</h3>
+          <div className="border-l border-mar-300 p-6 md:self-center">
+            <p className="eyebrow">ASÍ EMPEZAMOS</p>
+            <ol className="mt-6 space-y-5 leading-relaxed">
+              <li>
+                <b>01 / Completás la solicitud.</b>
+                <br />
+                Solo datos de contacto y disponibilidad.
+              </li>
+              <li>
+                <b>02 / Coordinamos con vos.</b>
+                <br />
+                El equipo asigna profesional y acuerdan el encuentro.
+              </li>
+              <li>
+                <b>03 / Confirmamos la admisión.</b>
+                <br />
+                Después del abono, recibís los datos de Google Meet.
+              </li>
+            </ol>
+          </div>
+          <h3 className="mt-8 text-2xl">¿Y después?</h3>
           <p className="mt-3 leading-relaxed">
             Si acordamos iniciar el proceso, los siguientes encuentros se
             coordinan directamente con tu profesional. Esta web gestiona

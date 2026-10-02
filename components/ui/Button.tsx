@@ -6,14 +6,15 @@ type Variante = "primario" | "secundario" | "contorno" | "fantasma";
 type Tamano = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none text-center";
+  "inline-flex items-center justify-center gap-2 min-h-12 cursor-pointer rounded-full font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none text-center";
 
 const variantes: Record<Variante, string> = {
-  primario: "bg-mar-700 text-white hover:bg-mar-800",
-  secundario: "bg-coral-500 text-white hover:bg-coral-600",
+  primario: "bg-navy text-white shadow-suave hover:bg-mar-800",
+  secundario:
+    "bg-coral-100 text-navy border-2 border-coral-600 hover:bg-coral-300",
   contorno:
-    "border border-mar-300 text-mar-800 hover:bg-mar-50 hover:border-mar-400",
-  fantasma: "text-mar-800 hover:bg-mar-50",
+    "border-2 border-mar-700 text-mar-800 hover:bg-mar-100 hover:border-mar-800",
+  fantasma: "text-mar-800 underline underline-offset-4 hover:bg-mar-100",
 };
 
 const tamanos: Record<Tamano, string> = {

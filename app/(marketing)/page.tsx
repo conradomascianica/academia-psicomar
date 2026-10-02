@@ -4,7 +4,6 @@ import { Hero } from "@/components/home/Hero";
 import { InstagramStrip } from "@/components/InstagramStrip";
 import { Section, EncabezadoSeccion } from "@/components/ui/Section";
 import { LinkButton } from "@/components/ui/Button";
-import { Foto } from "@/components/ui/Foto";
 import { FormacionCard } from "@/components/FormacionCard";
 import { IconoFlecha } from "@/components/ui/iconos";
 import { TerapiaPopover } from "@/components/TerapiaPopover";
@@ -31,41 +30,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
-
-      {/* Quiénes somos — preview */}
-      <Section fondo="crema" espaciado="amplio">
-        <div className="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-center">
-          <div className="grid grid-cols-2 gap-4">
-            {equipo.map((m) => (
-              <Foto
-                key={m.slug}
-                src={m.foto}
-                alt={m.fotoAlt}
-                etiqueta={`Foto de ${m.nombre.split(" ")[0]}`}
-                ratio="3 / 4"
-              />
-            ))}
-          </div>
-          <div className="flex flex-col gap-5">
-            <EncabezadoSeccion
-              sobretitulo="Quiénes somos"
-              titulo="Dos psicólogas. Una misma idea: hacer de la psicología algo un poco más cercano."
-            />
-            <div className="flex flex-col gap-4">
-              {equipo.map((m) => (
-                <div key={m.slug}>
-                  <p className="font-medium text-tinta">{m.nombre}</p>
-                  <p className="text-sm text-tinta-suave">{m.bioCorta}</p>
-                </div>
-              ))}
-            </div>
-            <LinkButton href="/quienes-somos" variante="contorno">
-              Conocé al equipo
-            </LinkButton>
-          </div>
-        </div>
-      </Section>
+      <Hero equipo={equipo} />
 
       {/* Formaciones destacadas */}
       <Section fondo="crema" espaciado="amplio">
