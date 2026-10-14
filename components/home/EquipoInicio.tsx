@@ -18,7 +18,8 @@ export function EquipoInicio({ equipo }: { equipo: MiembroEquipo[] }) {
               src={m.foto}
               alt={m.fotoAlt}
               etiqueta={`Foto de ${m.nombre}`}
-              ratio="4 / 3"
+              ratio="4 / 5"
+              className="[&_img]:object-top"
               priority
               sizes="(max-width: 640px) 85vw, 260px"
             />
